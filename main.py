@@ -2,6 +2,7 @@ import cortex as crtx
 import live_advance as live
 
 # https://medium.com/@kevinjycui/of-mice-and-mind-creating-a-simple-eeg-cursor-control-application-7fcdad703d2f
+# https://youtu.be/oKvhDe7tNts?si=vNJd8VfmkXV4aWuI
 
 if __name__ == '__main__':
 
