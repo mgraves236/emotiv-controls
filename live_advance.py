@@ -1,6 +1,8 @@
 import cortex
 from cortex import Cortex
+from pynput.keyboard import Key, Controller
 
+keyboard = Controller()
 
 class LiveAdvance():
     """
@@ -27,7 +29,6 @@ class LiveAdvance():
     set_sensitivity(profile_name):
         To set the sensitivity of the 4 active mental command actions.
     """
-
     def __init__(self, app_client_id, app_client_secret, **kwargs):
         self.c = Cortex(app_client_id, app_client_secret, debug_mode=True, **kwargs)
         self.c.bind(create_session_done=self.on_create_session_done)
@@ -168,7 +169,7 @@ class LiveAdvance():
         """
         To set the sensitivity of the 4 active mental command actions. This doesn't include "neutral".
         The order of the values must follow the order of the active actions, as returned by mentalCommandActiveAction
-
+        
         Parameters
         ----------
         profile_name : str, required
@@ -203,7 +204,7 @@ class LiveAdvance():
     def on_load_unload_profile_done(self, *args, **kwargs):
         is_loaded = kwargs.get('isLoaded')
         print("on_load_unload_profile_done: " + str(is_loaded))
-
+        
         if is_loaded == True:
             # get active action
             self.get_active_action(self.profile_name)
@@ -211,7 +212,7 @@ class LiveAdvance():
             print('The profile ' + self.profile_name + ' is unloaded')
             self.profile_name = ''
 
-    def on_save_profile_done(self, *args, **kwargs):
+    def on_save_profile_done (self, *args, **kwargs):
         print('Save profile ' + self.profile_name + " successfully")
         # subscribe mental command data
         stream = ['com']
@@ -220,7 +221,7 @@ class LiveAdvance():
     def on_new_com_data(self, *args, **kwargs):
         """
         To handle mental command data emitted from Cortex
-
+        
         Returns
         -------
         data: dictionary
@@ -228,6 +229,8 @@ class LiveAdvance():
         """
         data = kwargs.get('data')
         print('mc data: {}'.format(data))
+        # handle controls
+        handle_controls(data)
 
     def on_get_mc_active_action_done(self, *args, **kwargs):
         data = kwargs.get('data')
@@ -239,7 +242,7 @@ class LiveAdvance():
         print('on_mc_action_sensitivity_done: {}'.format(data))
         if isinstance(data, list):
             # get sensivity
-            new_values = [7, 7, 5, 5]
+            new_values = [7,7,5,5]
             self.set_sensitivity(self.profile_name, new_values)
         else:
             # set sensitivity done -> save profile
@@ -256,15 +259,32 @@ class LiveAdvance():
             # disconnect headset for next use
             print('Get error ' + error_message + ". Disconnect headset to fix this issue for next use.")
             self.c.disconnect_headset()
+            
+
+def handle_controls(data):
+    command = data["action"]
+    if command == 'push':
+        keyboard.press('s')
+        keyboard.release('s')
+    if command == 'lift':
+        keyboard.press('w')
+        keyboard.release('w')
+    if command == 'left':
+        keyboard.press('a')
+        keyboard.release('a')
+    if command == 'right':
+        keyboard.press('d')
+        keyboard.release('d')
+
 
 
 # -----------------------------------------------------------
-#
+# 
 # GETTING STARTED
 #   - Please reference to https://emotiv.gitbook.io/cortex-api/ first.
 #   - Connect your headset with dongle or bluetooth. You can see the headset via Emotiv Launcher
 #   - Please make sure the your_app_client_id and your_app_client_secret are set before starting running.
-#   - The function on_create_session_done,  on_query_profile_done, on_load_unload_profile_done will help
+#   - The function on_create_session_done,  on_query_profile_done, on_load_unload_profile_done will help 
 #          handle create and load an profile automatically . So you should not modify them
 #   - After the profile is loaded. We test with some advanced BCI api such as: mentalCommandActiveAction, mentalCommandActionSensitivity..
 #      But you can subscribe 'com' data to get live mental command data after the profile is loaded
@@ -272,22 +292,22 @@ class LiveAdvance():
 #    you can run live mode with the trained profile. the data as below:
 #    {'action': 'push', 'power': 0.85, 'time': 1647525819.0223}
 #    {'action': 'pull', 'power': 0.55, 'time': 1647525819.1473}
-#
+# 
 # -----------------------------------------------------------
 
-# def main():
-#     # Please fill your application clientId and clientSecret before running script
-#     your_app_client_id = ''
-#     your_app_client_secret = ''
-#
-#     # Init live advance
-#     l = LiveAdvance(your_app_client_id, your_app_client_secret)
-#
-#     trained_profile_name = ''  # Please set a trained profile name here
-#     l.start(trained_profile_name)
-#
-#
-# if __name__ == '__main__':
-#     main()
+def main():
+
+    # Please fill your application clientId and clientSecret before running script
+    your_app_client_id = ''
+    your_app_client_secret = ''
+
+    # Init live advance
+    l = LiveAdvance(your_app_client_id, your_app_client_secret)
+
+    trained_profile_name = ''  # Please set a trained profile name here
+    l.start(trained_profile_name)
+
+if __name__ =='__main__':
+    main()
 
 # -----------------------------------------------------------
