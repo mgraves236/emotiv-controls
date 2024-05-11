@@ -298,13 +298,13 @@ def handle_controls(data):
 def main():
 
     # Please fill your application clientId and clientSecret before running script
-    your_app_client_id = ''
-    your_app_client_secret = ''
+    your_app_client_id = 'lXFfhGPUMaIdmVNhBxvlB2TKYwMtvMG0pv8EdwGn'
+    your_app_client_secret = 'vmhGj898p7g3hTTpNEznDA7NIBjvXT3xAUczQJ8UGx4FyT4R2Vtrh5nW8ng6n9vupTJBQtYRPYlGnKK0KYWmiyMz2a4dvBYUmSezqEXn0SRY5ENwIqEw6xGXdmdYxybA'
 
     # Init live advance
     l = LiveAdvance(your_app_client_id, your_app_client_secret)
 
-    trained_profile_name = ''  # Please set a trained profile name here
+    trained_profile_name = 'Magda'  # Please set a trained profile name here
     l.start(trained_profile_name)
 
 if __name__ =='__main__':

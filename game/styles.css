@@ -1,0 +1,17 @@
+body {
+    height: 96vh;
+    overflow-y: hidden;
+}
+
+#canvas {
+    height: 80vh;
+    width: 80vh;
+    margin: auto;
+    background-image: url("img/grass-s.png");
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
