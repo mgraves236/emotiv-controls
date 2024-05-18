@@ -1,5 +1,7 @@
 # Sterowanie w grze komputerowej za pomocą technologii EEG
 
+**Autorzy**: Magdalena Gołębiowska (255540), Mateusz Śliwiński (253403)
+
 W ramach projektu stworzono skrypt wykorzystujący [Cortex API](https://emotiv.gitbook.io/cortex-api), który interpretuje komendy umysłowe 
 zdefiniowane i wytrenowane w aplikacji EmotivBCI i na ich podstawie
 symuluje wejście z klawiatury, które odpowiada za sterowanie postacią w grze.
