@@ -67,3 +67,4 @@ za pomocą Kreatora obrazów udostępnionego przez firmę Microsoft opartym na m
 
 Gra nie wymaga uprzedniej kompilacji i aby ją uruchomić, należy otworzyć plik `index.html` w przeglądarce internetowej.
 
+![1.png](img%2F1.png)
