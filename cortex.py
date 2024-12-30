@@ -1,12 +1,18 @@
-import websocket #'pip install websocket-client' for install
-from datetime import datetime
 import json
 import ssl
-import time
-import sys
-from pydispatch import Dispatcher
-import warnings
 import threading
+import time
+import warnings
+from collections.abc import Mapping
+from collections.abc import MutableSequence
+from collections.abc import Sequence
+from collections.abc import Sized
+from datetime import datetime
+from typing import Any
+from typing import Union
+
+import websocket #'pip install websocket-client' for install
+from pydispatch import Dispatcher
 
 
 # define request id
@@ -134,7 +140,7 @@ class Cortex(Dispatcher):
         print("on_close")
         print(args[1])
 
-    def handle_result(self, recv_dic):
+    def handle_result(self, recv_dic: Mapping[Any, Mapping[Union[Mapping, int, str], Any]]):
         if self.debug:
             print(recv_dic)
 
@@ -309,12 +315,12 @@ class Cortex(Dispatcher):
         else:
             print('No handling for response of request ' + str(req_id))
 
-    def handle_error(self, recv_dic):
+    def handle_error(self, recv_dic: Mapping):
         req_id = recv_dic['id']
         print('handle_error: request Id ' + str(req_id))
         self.emit('inform_error', error_data=recv_dic['error'])
     
-    def handle_warning(self, warning_dic):
+    def handle_warning(self, warning_dic: Mapping[Any, Mapping]):
 
         if self.debug:
             print(warning_dic)
@@ -340,7 +346,7 @@ class Cortex(Dispatcher):
             if (self.isHeadsetConnected == False):
                 self.refresh_headset_list()
 
-    def handle_stream_data(self, result_dic):
+    def handle_stream_data(self, result_dic: Mapping[Any, MutableSequence]):
         if result_dic.get('com') != None:
             com_data = {}
             com_data['action'] = result_dic['com'][0]
@@ -590,7 +596,7 @@ class Cortex(Dispatcher):
 
         self.ws.send(json.dumps(unsub_request_json))
 
-    def extract_data_labels(self, stream_name, stream_cols):
+    def extract_data_labels(self, stream_name, stream_cols: Sequence):
         labels = {}
         labels['streamName'] = stream_name
 
@@ -643,7 +649,7 @@ class Cortex(Dispatcher):
 
         self.ws.send(json.dumps(get_profile_json))
 
-    def setup_profile(self, profile_name, status):
+    def setup_profile(self, profile_name, status: str):
         print('setup profile: ' + status + ' -------------------------------- ')
         setup_profile_json = {
             "jsonrpc": "2.0",
@@ -683,7 +689,7 @@ class Cortex(Dispatcher):
 
         self.ws.send(json.dumps(train_request_json))
 
-    def create_record(self, title, **kwargs):
+    def create_record(self, title: Sized, **kwargs):
         print('create record --------------------------------')
 
         if (len(title) == 0):
@@ -724,7 +730,7 @@ class Cortex(Dispatcher):
             print('stop record request:\n', json.dumps(stop_record_request, indent=4))
         self.ws.send(json.dumps(stop_record_request))
 
-    def export_record(self, folder, stream_types, export_format, record_ids,
+    def export_record(self, folder: Sized, stream_types, export_format, record_ids,
                       version, **kwargs):
         print('export record --------------------------------: ')
         #validate destination folder

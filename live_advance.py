@@ -1,10 +1,11 @@
+from pynput.keyboard import Controller
+
 import cortex
 from cortex import Cortex
-from pynput.keyboard import Key, Controller
 
 keyboard = Controller()
 
-class LiveAdvance():
+class LiveAdvance:
     """
     A class to show mental command data at live mode of trained profile.
     You can load a profile trained on EmotivBCI or via train.py example
@@ -40,7 +41,7 @@ class LiveAdvance():
         self.c.bind(mc_action_sensitivity_done=self.on_mc_action_sensitivity_done)
         self.c.bind(inform_error=self.on_inform_error)
 
-    def start(self, profile_name, headsetId=''):
+    def start(self, profile_name: str, headsetId=''):
         """
         To start live process as below workflow
         (1) check access right -> authorize -> connect headset->create session
